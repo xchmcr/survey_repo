@@ -5,12 +5,13 @@ import plotly.express as px
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], )
 server = app.server
+
 #Load Image
 image_path = 'assets/survey.jpg'
 
 
 # Load Dataframe
-excel_file = 'Survey_Results.xlsx'
+excel_file = r'C:\Users\Migue\Survey_Folder\survey_repo\Survey_Results1.xlsx'
 sheet_name = 'DATA'
 
 df = pd.read_excel(excel_file, sheet_name=sheet_name, usecols='B:D', header=3)
@@ -18,7 +19,7 @@ df = pd.read_excel(excel_file, sheet_name=sheet_name, usecols='B:D', header=3)
 df_participants = pd.read_excel(excel_file, sheet_name= sheet_name, usecols='F:G', header=3)
 df_participants.dropna(inplace=True)
 
-# Selection
+# column Selection and assign
 department = df['Department'].unique().tolist()
 ages = df['Age'].unique().tolist()
 
@@ -29,7 +30,7 @@ department_selection = dcc.Dropdown( department, value=[department[0], departmen
 
 
 
-app.layout=dbc.Container([dbc.Row([dbc.Col([html.P('Survey Results 2021', className='title'), html.P('Redesign Data App With Dash Plotly (YT : @walidata1996, Tiktok: @walidata18)', className='subtitle'),   dbc.Col(html.Img(src=image_path, className='img')
+app.layout=dbc.Container([dbc.Row([dbc.Col([html.P('Survey Results 2021', className='title'), html.P('Dash app!!!', className='subtitle'),   dbc.Col(html.Img(src=image_path, className='img')
 )])]),
                           dbc.Row([
     dbc.Col([html.P('Select Range Age'), age_selection, html.P('Select Department'), department_selection], className='card',),
@@ -59,6 +60,9 @@ def graph(age, department):
     df_grouped = df_grouped.rename(columns={'Age': 'Votes'})
     df_grouped = df_grouped.reset_index()
 
+
+#CHARTS
+#barchart
     bar_chart = px.bar(df_grouped,
                     title='Rating vs Votes',
                     x='Rating',
@@ -76,6 +80,8 @@ def graph(age, department):
     bar_chart.update_xaxes(gridcolor='#ECF2FF', minor_griddash="dot")
     bar_chart.update_traces(marker_color='#035064')
 
+
+#piechart
     pie_chart = px.pie(df_participants,
                     title='Total No. of Participants',
                     values='Participants',
