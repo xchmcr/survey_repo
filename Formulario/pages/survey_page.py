@@ -38,11 +38,11 @@ def insert_to_db(age, department, rating):
     cursor = conn.cursor()
 
     # Check if table exists, create it if necessary
-    cursor.execute("CREATE TABLE IF NOT EXISTS Survey_Results1 (Age INTEGER, Department TEXT, Rating INTEGER)")
+    cursor.execute("CREATE TABLE IF NOT EXISTS Survey_Results1 (Age INTEGER, Department TEXT, Rating TEXT)")
     
     # Insert the data
     query = "INSERT INTO Survey_Results1 (Age, Department, Rating) VALUES (?, ?, ?)"
-    cursor.execute(query, (age, department, rating))
+    cursor.execute(query, (age, department, f'{rating} Star'))
     conn.commit()
     conn.close()
 
@@ -66,3 +66,4 @@ def register_callbacks(app):
         insert_to_db(age, department, rating)
 
         return "Survey submitted successfully!"
+
